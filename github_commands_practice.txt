@@ -303,3 +303,12 @@ root@ip-172-31-45-27:~/jerry_repo/hello-world# cat /root/.ssh/id_rsa.pub we can 
  
 root@ip-172-31-45-27:~/jerry_repo/hello-world# ssh -T git@github.com
 Hi himalayashinde! You've successfully authenticated, but GitHub does not provide shell access.
+--------------------------------------------------------------------------------------------------------------------
+
+
+
+Git : How to go back to previous state.
+
+git checkout [8 digit hash code] [filename] 
+
+this will send you to previous state of the file or the last commit state you wanted to go back.
