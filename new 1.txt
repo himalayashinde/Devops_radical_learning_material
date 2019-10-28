@@ -1,0 +1,5 @@
+server se client setup karo NFS 
+
+RSA setup btween two server kro
+
+execute the script from host server

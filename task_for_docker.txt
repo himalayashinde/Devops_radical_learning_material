@@ -1,0 +1,17 @@
+
+build for this dockerfile
+ 
+tomcat
+nginx
+mysql
+
+make volume persistance for apache or tomcat or my sql
+
+delete all stopped container in one command. 
+docker rm $(docker ps -a -q)
+
+docker commit
+
+top :- linux command 
+docker compose
+docker registry

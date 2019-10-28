@@ -1,0 +1,107 @@
+How to use Docker build 
+
+First tag the image to a repository then push the image to the docker hub
+
+1> docker tag 76e576a5ed06 himalayashinde/demorepo:nginx_installed_container_1.0
+2> docker push himalayashinde/demorepo:nginx_installed_container_1.0
+
+
+root@ip-172-31-36-255:~/learning_permission# docker images
+REPOSITORY                  TAG                 IMAGE ID            CREATED             SIZE
+himalayashinde/demorepo     1.0                 76e576a5ed06        22 minutes ago      156MB
+nginx_installed_container   1.0                 76e576a5ed06        22 minutes ago      156MB
+wild_card_bkp               latest              30c52dd2c0cb        4 days ago          64.2MB
+ubuntu                      latest              2ca708c1c9cc        3 weeks ago         64.2MB
+hello-world                 latest              fce289e99eb9        9 months ago        1.84kB
+
+root@ip-172-31-36-255:~/learning_permission# docker tag 76e576a5ed06 himalayashinde/demorepo:nginx_installed_container_1.0
+root@ip-172-31-36-255:~/learning_permission# docker images
+REPOSITORY                  TAG                             IMAGE ID            CREATED             SIZE
+himalayashinde/demorepo     1.0                             76e576a5ed06        24 minutes ago      156MB
+himalayashinde/demorepo     nginx_installed_container_1.0   76e576a5ed06        24 minutes ago      156MB
+nginx_installed_container   1.0                             76e576a5ed06        24 minutes ago      156MB
+wild_card_bkp               latest                          30c52dd2c0cb        4 days ago          64.2MB
+ubuntu                      latest                          2ca708c1c9cc        3 weeks ago         64.2MB
+hello-world                 latest                          fce289e99eb9        9 months ago        1.84kB
+
+root@ip-172-31-36-255:~/learning_permission# docker push himalayashinde/demorepo:nginx_installed_container_1.0
+The push refers to repository [docker.io/himalayashinde/demorepo]
+a26476a64a6b: Pushed
+bea7bcfe26d8: Pushed
+a9fb202fed57: Pushed
+e80c789bc6ac: Pushed
+6c3332381368: Pushed
+ef1a1ec5bba9: Pushed
+a1aa3da2a80a: Pushed
+nginx_installed_container_1.0: digest: sha256:f5c6a7d392f278d8dc2240c80fc85abbdf59d74bac52988e2fd1985bccd5e873 size: 1787
+
+
+------------------------------------
+Docker Pull examples
+--------------------------------------
+
+root@ip-172-31-36-255:~/learning_permission# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+wild_card_bkp       latest              30c52dd2c0cb        4 days ago          64.2MB
+ubuntu              latest              2ca708c1c9cc        3 weeks ago         64.2MB
+hello-world         latest              fce289e99eb9        9 months ago        1.84kB
+
+root@ip-172-31-36-255:~/learning_permission# docker pull himalayashinde/demorepo:1.0
+1.0: Pulling from himalayashinde/demorepo
+5667fdb72017: Already exists
+d83811f270d5: Already exists
+ee671aafb583: Already exists
+7fc152dfb3a6: Already exists
+af74d50fda25: Pull complete
+97e2df887d70: Pull complete
+8b5a53a57249: Pull complete
+Digest: sha256:f5c6a7d392f278d8dc2240c80fc85abbdf59d74bac52988e2fd1985bccd5e873
+Status: Downloaded newer image for himalayashinde/demorepo:1.0
+docker.io/himalayashinde/demorepo:1.0
+
+root@ip-172-31-36-255:~/learning_permission# docker images
+REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+himalayashinde/demorepo   1.0                 76e576a5ed06        34 minutes ago      156MB
+wild_card_bkp             latest              30c52dd2c0cb        4 days ago          64.2MB
+ubuntu                    latest              2ca708c1c9cc        3 weeks ago         64.2MB
+hello-world               latest              fce289e99eb9        9 months ago        1.84kB
+root@ip-172-31-36-255:~/learning_permission# docker pull himalayashinde/demorepo:nginx_installed_container_1.0
+nginx_installed_container_1.0: Pulling from himalayashinde/demorepo
+Digest: sha256:f5c6a7d392f278d8dc2240c80fc85abbdf59d74bac52988e2fd1985bccd5e873
+Status: Downloaded newer image for himalayashinde/demorepo:nginx_installed_container_1.0
+docker.io/himalayashinde/demorepo:nginx_installed_container_1.0
+
+root@ip-172-31-36-255:~/learning_permission# docker images
+REPOSITORY                TAG                             IMAGE ID            CREATED             SIZE
+himalayashinde/demorepo   1.0                             76e576a5ed06        35 minutes ago      156MB
+himalayashinde/demorepo   nginx_installed_container_1.0   76e576a5ed06        35 minutes ago      156MB
+wild_card_bkp             latest                          30c52dd2c0cb        4 days ago          64.2MB
+ubuntu                    latest                          2ca708c1c9cc        3 weeks ago         64.2MB
+hello-world               latest                          fce289e99eb9        9 months ago        1.84kB
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+Below is just info
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+root@ip-172-31-36-255:~/learning_permission# docker rmi himalayashinde/demorepo:nginx_installed_container_1.0
+Untagged: himalayashinde/demorepo:nginx_installed_container_1.0
+root@ip-172-31-36-255:~/learning_permission# docker rmi himalayashinde/demorepo
+Error: No such image: himalayashinde/demorepo
+root@ip-172-31-36-255:~/learning_permission# docker rmi 76e576a5ed06
+Error response from daemon: conflict: unable to delete 76e576a5ed06 (must be forced) - image is referenced in multiple repositories
+root@ip-172-31-36-255:~/learning_permission# docker rmi 76e576a5ed06 -f
+Untagged: himalayashinde/demorepo:1.0
+Untagged: himalayashinde/demorepo@sha256:f5c6a7d392f278d8dc2240c80fc85abbdf59d74bac52988e2fd1985bccd5e873
+Untagged: nginx_installed_container:1.0
+Deleted: sha256:76e576a5ed06af2c063d4a7fb23ba867f0614b60fbcdc44f7a51859dc55fd174
+Deleted: sha256:20b2c2c339ae7f472b922af2f7a9ae313596ee051938e9d481ab7072ae2c6777
+Deleted: sha256:cb3c34b450c303e536456398f4a4703e145925c3f438a4893b80f5bb418dab35
+Deleted: sha256:616cd85931f9afc22c72b97b1193b46c55d8af6af74a2319b32aa7f715288f81
+Deleted: sha256:3bc07ecd8d13a626f7a01f02b05b6d34be26fd9fbe8368513ec108068be72822
+Deleted: sha256:69a9fb15f858ba9b2e133a52a61d76fbe0fd7bd3b5a0d87e44d88a5437a58f74
+Deleted: sha256:1f73d20989963851810c878e6a78f541ab911dab97218c18cbd236eaf98df8bd
+Deleted: sha256:4d6058b21f3650a39ef60817670f80b50dcd32551d759156ec352393dd034951
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------

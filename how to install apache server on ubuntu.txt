@@ -1,0 +1,37 @@
+--https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-18-04-quickstart
+--https://vitux.com/how-to-install-and-configure-apache-web-server-on-ubuntu/
+
+
+apt-get install apache2 -y -- It will directly install the apachce server on the ubuntu
+sudo ufw app list -- it will print the available application
+
+Output
+Available applications:
+  Apache
+  Apache Full
+  Apache Secure
+  OpenSSH
+
+sudo ufw allow 'Apache' -- it enables the apache services
+
+sudo ufw status -- checks the services status
+
+systemctl status apache2 -- checks the status of the webserver.
+
+Output
+● apache2.service - The Apache HTTP Server
+   Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
+  Drop-In: /lib/systemd/system/apache2.service.d
+           └─apache2-systemd.conf
+   Active: active (running) since Tue 2018-04-24 20:14:39 UTC; 9min ago
+ Main PID: 2583 (apache2)
+    Tasks: 55 (limit: 1153)
+   CGroup: /system.slice/apache2.service
+           ├─2583 /usr/sbin/apache2 -k start
+           ├─2585 /usr/sbin/apache2 -k start
+           └─2586 /usr/sbin/apache2 -k start
+		   
+		   
+Access the default Apache landing page to confirm that the software is running properly through your IP address:
+
+http://your_server_ip

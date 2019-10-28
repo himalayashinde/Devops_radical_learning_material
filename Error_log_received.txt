@@ -1,0 +1,47 @@
+--Below are the error received during the learning of docker --
+
+1>	root@ip-172-31-36-255:/var/docker/ubuntu/mysql# docker exec -it 9f5b5255b14a /bin/bash
+	Error response from daemon: Container 9f5b5255b14ad01e18300017637cfbcf1428eb4c54a03497b342ef1e7b84c6e7 is not running
+
+2> 	root@ip-172-31-36-255:/var/docker/ubuntu/mysql# docker run -it ubuntu-mysql
+	ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+
+3>  root@ip-172-31-36-255:~# docker run -t --name zebra_cross -d -p 1900:22 -v /lamborgini:/lamborgini ubuntu
+	bb4af57771087c78190e9b2b592ebb362545d2ec34b5552fe6635bb8f8a19cc3
+	
+	Ans> From the error message, it may be related to the use of the snap version of Docker,
+		 which seems to have issues creating volumes that mount outside of the user's home directory.
+		(The Docker extension adds a volume during debugging that mounts to the NuGet package fallback folder on the local machine.)
+		
+4> root@ip-172-31-36-255:~# docker stop 73c35aa878a2
+   Error response from daemon: cannot stop container: 73c35aa878a2: Cannot kill container 73c35aa878a24696885c5c931a412338081ba535c2adf4e6b5275717255f270b:
+   unknown error after kill: runc did not terminate sucessfully: container_linux.go:388: signaling init process caused "permission denied": unknown
+		
+5> root@ip-172-31-36-255:~# docker push wild_card_bkp
+   The push refers to repository [docker.io/library/wild_card_bkp]
+   f0446192eb03: Preparing
+   e80c789bc6ac: Preparing
+   6c3332381368: Preparing 
+   ef1a1ec5bba9: Preparing
+   a1aa3da2a80a: Preparing
+   denied: requested access to the resource is denied
+		
+
+docker run -t --name zebra_cross -d -p 1900:22 -v /lamborgini:/lamborgini ubuntu
+
+root@ip-172-31-36-255:~# docker run -t --name zebra_cross -d -p 1900:22 -v /lamborgini:/lamborgini ubuntu
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+5667fdb72017: Pull complete
+d83811f270d5: Pull complete
+ee671aafb583: Pull complete
+7fc152dfb3a6: Pull complete
+Digest: sha256:b88f8848e9a1a4e4558ba7cfc4acc5879e1d0e7ac06401409062ad2627e6fb58
+Status: Downloaded newer image for ubuntu:latest
+275f06e1e2a1dd62875704eceb92bcc0bd5695c0c1f711162bd633942a20fe22
+root@ip-172-31-36-255:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS                          PORTS                  NAMES
+275f06e1e2a1        ubuntu              "/bin/bash"         18 seconds ago       Up 17 seconds                   0.0.0.0:1900->22/tcp   zebra_cross
+8057992e04fd        hello-world         "/hello"            About a minute ago   Exited (0) About a minute ago                          sweet_goldwasser
+root@ip-172-31-36-255:~#
+
