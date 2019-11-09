@@ -1,0 +1,22 @@
+NAMESPACES:- Isolation of resorces by process
+Control Groups:-Limit resorces per process
+image:- file system snapshot and startup command
+
+docker run= docker run + docker  start
+dcocker file contains all the info for running your software in your base container
+
+how to create a custom image
+1> choose a base image
+2> run commands for your software
+3> specify the base commands to be ran at startup  
+
+FROM alpine
+RUN apk add --update redis
+CMD ["redis-server"]
+
+docker build -t harry/redis:latest .(DOT)
+
+here
+ harry: docker username
+ redis : image name
+ latest : version

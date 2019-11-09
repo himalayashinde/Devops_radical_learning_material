@@ -1,0 +1,16 @@
+Docker layers
+
+uptime
+
+id
+
+ctrl pq -- container will not get down
+
+start and comeback to local aws terminal from a container with out stopping or making down the container
+
+apt-get install apache2
+
+port mapping -- it exposes the port to the dockcer or VM
+-p [sourceport]:[tagertport]
+
+Volume persistance

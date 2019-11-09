@@ -1,0 +1,23 @@
+docker run -d -p 81:80 ubuntu-apache  -- It makes the 
+
+FROM ubuntu
+
+MAINTAINER Himalaya_shinde
+
+RUN apt-get update -y
+
+RUN apt-get upgrade -y
+
+RUN apt-get install apache2 -y
+
+RUN echo "Hello apache server on Ubuntu Docker server" > /var/www/html/index.html
+
+EXPOSE 80
+
+CMD /usr/sbin/apache2ctl -D FOREGROUND
+
+netstat -tulpn | grep :80
+
+sudo service apache2 stop
+----------------------------------------------------------------------------
+

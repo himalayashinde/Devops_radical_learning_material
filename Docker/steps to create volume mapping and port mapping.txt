@@ -1,0 +1,3 @@
+First create a folder in the  main Virtual OS i.e Ubuntu here 
+
+docker run -t --name new_backup_of_baseosubuntu -p 1801:565 -v ~/baseos_ubuntu:/tractor ubuntu

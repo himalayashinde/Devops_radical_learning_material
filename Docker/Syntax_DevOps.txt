@@ -1,0 +1,451 @@
+
+How to boot ubuntu in text mode?
+======================================================================================
+1) sudo cp /etc/default/grub /etc/default/grub.gui
+2) sudo gedit /etc/default/grub
+3) Comment line :- 
+#GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+4) Change :- 
+GRUB_CMDLINE_LINUX="" TO GRUB_CMDLINE_LINUX="text"
+5) Remove # from 
+#GRUB_TERMINAL=console
+6) sudo update-grub
+7) Enable multi-user
+sudo systemctl enable multi-user.target --force
+sudo systemctl set-default multi-user.target
+8) sudo reboot
+
+To switch back to GUI :- 
+sudo cp /etc/default/grub /etc/default/grub.text
+sudo cp /etc/default/grub.gui /etc/default/grub
+sudo update-grub
+sudo reboot
+
+
+How to enable ssh on ubuntu?
+======================================================================================
+apt-get install openssh-server
+systemctl enable ssh
+systemctl start ssh
+
+How to disable firewall on ubuntu 18.04 ?
+======================================================================================
+ufw status
+ufw disable
+
+To enable again :- 
+ufw enable
+
+
+How to allow root login  ?
+======================================================================================
+vi /etc/ssh/sshd_config
+#add below line
+PermitRootLogin yes
+
+systemctl restart ssh
+
+
+How to install NFS on ubuntu?
+======================================================================================
+On server:-
+apt-get update
+apt-get install nfs-kernel-server -y
+mkdir -p /for_nfs
+chown nobody:nogroup /for_nfs
+chmod 777 /for_nfs
+vi /etc/exports
+/for_nfs devops02(rw,sync,no_subtree_check)
+exportfs -a
+systemctl restart nfs-kernel-server
+
+
+On client:- 
+apt-get update
+apt-get install nfs-common -y
+mkdir -p /for_nfs
+mount devops01:/for_nfs /for_nfs
+
+for auto mount of NFS on reboot add below line to :- 
+vi /etc/fstab
+devops01:/for_nfs   /for_nfs  nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 0
+
+
+
+
+
+How to Install DOCKER ?
+======================================================================================
+on ubuntu :- 
+apt-get upgrade
+apt-get update
+apt-get install apt-transport-https ca-certificates curl software-properties-common -y
+apt-get install docker.io
+
+On RHEL
+yum update
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+yum install docker-ce --nobest
+yum list | grep container
+
+
+How to start docker service?
+======================================================================================
+systemctl status docker
+systemctl start docker
+systemctl status docker
+systemctl enable docker
+
+How to run Image ? How to run container ? 
+======================================================================================
+docker run hello-world
+docker run busybox
+docker run busybox echo "hello from busybox"
+
+
+Container specific commands 
+======================================================================================
+1) docker create :- Creates a container but does not start it. 
+root@DevOps1:~# docker create hello-world
+1760c45415fe92619db2a9fe068ae02b6a2ee760a62f7f6cb1dc174264f22a9e
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                       PORTS               NAMES
+1760c45415fe        hello-world         "/hello"            6 seconds ago       Created                                          friendly_benz
+
+2) docker start :- Just execute (does not keep it running).
+root@DevOps1:~# docker start 1760c45415fe
+1760c45415fe
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                       PORTS               NAMES
+1760c45415fe        hello-world         "/hello"            2 minutes ago       Exited (0) 5 seconds ago                         friendly_benz
+
+3) docker rename :- allows the container to be renamed. 
+root@DevOps1:~# docker rename friendly_benz enemy_benz
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                        PORTS               NAMES
+1760c45415fe        hello-world         "/hello"            4 minutes ago       Exited (0) 2 minutes ago                          enemy_benz
+
+4) docker run :- creates and starts a container in one operation. 
+root@DevOps1:~# docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                        PORTS               NAMES
+53a74ef5cb9f        hello-world         "/hello"            4 seconds ago       Exited (0) 3 seconds ago                          amazing_goldberg
+
+5) docker rm :- removes the containers 
+
+#Remove	all	stopped	containers 
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                        PORTS               NAMES
+53a74ef5cb9f        hello-world         "/hello"            4 seconds ago       Exited (0) 3 seconds ago                          amazing_goldberg
+bbadb1652960        hello-world         "/hello"            5 minutes ago       Exited (0) 5 minutes ago                          naughty_mayer
+1760c45415fe        hello-world         "/hello"            6 minutes ago       Exited (0) 4 minutes ago                          enemy_benz
+07cdb8c7c1e0        ubuntu              "cat Dockerfile"    6 days ago          Exited (1) 5 days ago                             compassionate_tesla
+336c81deed99        ubuntu              "bash"              6 days ago          Exited (255) 14 minutes ago                       awesome_swartz
+4db4c76836be        hello-world         "/hello"            6 days ago          Exited (0) 5 days ago                             vigorous_cray
+
+#Remove only exited containers
+root@DevOps1:~# docker rm $(docker ps -q -f "status=exited")
+53a74ef5cb9f
+bbadb1652960
+1760c45415fe
+07cdb8c7c1e0
+336c81deed99
+4db4c76836be
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+root@DevOps1:~#
+
+#Forcefully remove all containers
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+314d4cba2aed        ubuntu              "bash"              14 seconds ago      Up 13 seconds                           vigorous_hawking
+root@DevOps1:~# docker rm -f $(docker ps -aq)
+314d4cba2aed
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+root@DevOps1:~#
+
+6) docker update :- updates a container's resource limits. 
+docker run --rm : remove the container after it stops. docker run -v $HOSTDIR:$DOCKERDIR: map the directory ($HOSTDIR) on the host to a docker container ($DOCKERDIR). 
+docker rm –v: remove the volumes associated with the container. 
+docker run --log-driver=syslog : run docker with a custom log driver.
+
+7) docker stop :- 
+root@DevOps1:~# docker run -it ubuntu bash
+root@8527807a5594:/# root@DevOps1:~#
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+8527807a5594        ubuntu              "bash"              11 seconds ago      Up 9 seconds                            priceless_hugle
+root@DevOps1:~# docker stop 8527807a5594
+8527807a5594
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS                     PORTS               NAMES
+8527807a5594        ubuntu              "bash"              About a minute ago   Exited (0) 3 seconds ago                       priceless_hugle
+
+
+8)  docker restart stops and starts a container. 
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS                     PORTS               NAMES
+8527807a5594        ubuntu              "bash"              About a minute ago   Exited (0) 3 seconds ago                       priceless_hugle
+root@DevOps1:~# docker restart 8527807a5594
+8527807a5594
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+8527807a5594        ubuntu              "bash"              2 minutes ago       Up 2 seconds                            priceless_hugle
+root@DevOps1:~#
+
+
+9)  docker pause pauses a running container, "freezing" it in place. 
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+8527807a5594        ubuntu              "bash"              2 minutes ago       Up 2 seconds                            priceless_hugle
+root@DevOps1:~# docker pause 8527807a5594
+8527807a5594
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                   PORTS               NAMES
+8527807a5594        ubuntu              "bash"              2 minutes ago       Up 32 seconds (Paused)                       priceless_hugle
+
+
+10) docker unpause will unpause a running container. 
+root@DevOps1:~# docker attach 8527807a5594
+You cannot attach to a paused container, unpause it first
+root@DevOps1:~# docker unpause 8527807a5594
+8527807a5594
+root@DevOps1:~# docker attach 8527807a5594
+root@8527807a5594:/# read escape sequence
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+8527807a5594        ubuntu              "bash"              4 minutes ago       Up About a minute                       priceless_hugle
+
+
+11) docker wait blocks until running container stops. 
+
+root@DevOps1:~# docker wait 8527807a5594
+
+#it is now in waiting... I am going to stop it from other session.
+
+0
+root@DevOps1:~#
+root@DevOps1:~# #it is now in waiting... I am going to stop it from other session.
+
+12) docker kill sends a SIGKILL to a running container. 
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+8527807a5594        ubuntu              "bash"              6 minutes ago       Exited (0) 42 seconds ago                       priceless_hugle
+root@DevOps1:~# docker kill 8527807a5594
+Error response from daemon: Cannot kill container: 8527807a5594: Container 8527807a55942fd75c0cdb3f2f303a09ee0b287570a4ee2c7e218bbe59640082 is not running
+root@DevOps1:~# docker start 8527807a5594
+8527807a5594
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+8527807a5594        ubuntu              "bash"              7 minutes ago       Up 3 seconds                            priceless_hugle
+root@DevOps1:~# docker kill 8527807a5594
+8527807a5594
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                        PORTS               NAMES
+8527807a5594        ubuntu              "bash"              7 minutes ago       Exited (137) 13 seconds ago                       priceless_hugle
+
+
+13) docker attach will connect to a running container.
+
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                        PORTS               NAMES
+8527807a5594        ubuntu              "bash"              7 minutes ago       Exited (137) 13 seconds ago                       priceless_hugle
+root@DevOps1:~# docker start 8527807a5594
+8527807a5594
+root@DevOps1:~# docker attach 8527807a5594
+root@8527807a5594:/# who am i
+root@8527807a5594:/# uptime
+ 12:23:49 up 34 min,  0 users,  load average: 0.03, 0.05, 0.05
+root@8527807a5594:/# read escape sequence
+root@DevOps1:~# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+8527807a5594        ubuntu              "bash"              8 minutes ago       Up 33 seconds                           priceless_hugle
+
+14) Save docker image
+
+root@DevOps1:~# docker images
+REPOSITORY               TAG                 IMAGE ID            CREATED             SIZE
+ubuntu                   latest              2ca708c1c9cc        9 days ago          64.2MB
+quay.io/vektorlab/ctop   latest              0bb9929cff6d        3 months ago        13.4MB
+ubuntu                   14.04               2c5e00d77a67        4 months ago        188MB
+hello-world              latest              fce289e99eb9        9 months ago        1.84kB
+root@DevOps1:~# docker save hello-world -o hw.tar
+
+15) load modified image to docker
+
+root@DevOps1:~/try# docker images
+REPOSITORY               TAG                 IMAGE ID            CREATED             SIZE
+ubuntu                   latest              2ca708c1c9cc        9 days ago          64.2MB
+quay.io/vektorlab/ctop   latest              0bb9929cff6d        3 months ago        13.4MB
+ubuntu                   14.04               2c5e00d77a67        4 months ago        188MB
+
+
+root@DevOps1:~/try# docker load -i hw5.tar
+0b2a56af9863: Loading layer [==================================================>]  10.24kB/10.24kB
+Loaded image: hello-world2:latest
+
+
+root@DevOps1:~/try# docker images
+REPOSITORY               TAG                 IMAGE ID            CREATED             SIZE
+ubuntu                   latest              2ca708c1c9cc        9 days ago          64.2MB
+quay.io/vektorlab/ctop   latest              0bb9929cff6d        3 months ago        13.4MB
+ubuntu                   14.04               2c5e00d77a67        4 months ago        188MB
+hello-world2             latest              147e6460ec8d        9 months ago        1.84kB
+
+16) MySQL Volume / Port docker practice
+mkdir -p /root/mysql/conf
+mkdir -p /root/mysql/data
+echo "[mysqld]" > /root/mysql/conf/conf.d
+echo "max_connections=50" >> /root/mysql/conf/conf.d
+
+
+a) docker run --detach --name=test-mysql -e MYSQL_ROOT_PASSWORD=password --publish 3306:3306 --volume=/root/mysql/conf/conf.d:/etc/mysql/conf.d --volume=/root/mysql/data:/var/lib/mysql mysql/mysql-server
+b) docker exec -it test-mysql bash
+c) mysql -uroot -p
+	CREATE USER 'root'@'%' IDENTIFIED BY 'password';
+	GRANT ALL PRIVILEGES ON *.* TO 'root'@'%';
+	FLUSH PRIVILEGES;
+	SELECT host FROM mysql.user WHERE User = 'root';
+	exit;
+d) exit (from bash)
+e) mysql -uroot -ppassword -h 172.17.0.1 -P 3306
+	use mysql;
+	create table tab(c1 int);
+	insert into tab values(10);
+	insert into tab values(20);
+	insert into tab values(30);
+	insert into tab values(40);
+	insert into tab values(40);
+	insert into tab values(40);
+	commit;
+
+	select TABLE_SCHEMA,TABLE_NAME,TABLE_CATALOG,CREATE_TIME from INFORMATION_SCHEMA.TABLES where TABLE_NAME='tab';
+
+
+
+
+How to install docker-compose ??
+======================================================================================
+curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
+chmod +x /usr/bin/docker-compose
+
+
+
+How to create docker registry using docker command?
+======================================================================================
+docker run -d -p 50000:5000 --restart always --name my-registry registry:latest 
+
+
+How to create docker registry using docker-compose file? 
+======================================================================================
+vi /etc/hosts
+127.0.0.1     localhost  my-registry
+
+
+vi docker-compose.yml
+version: '3.0'
+
+services:
+  my-registry:
+    image: registry:latest
+    container_name: my-registry
+    volumes:
+      - registry:/for_nfs/docker_registry
+    ports:
+      - "50000:5000"
+    restart: unless-stopped
+volumes:
+  registry:
+
+
+Start docker-compose :- 
+docker-compose up
+
+Then verify URL :- 
+http://192.168.1.101:50000/v2/_catalog
+
+
+How to push image to local registry ? 
+======================================================================================
+root@devops01:~/docker_files# docker tag hello-world:latest my-registry:50000/hello-world-local:latest
+root@devops01:~/docker_files# docker push my-registry:50000/hello-world-local:latest
+The push refers to repository [my-registry:50000/hello-world-local]
+af0b15c8625b: Pushed
+latest: digest: sha256:92c7f9c92844bbbb5d0a101b22f7c2a7949e40f8ea90c8b3bc396879d95e899a size: 524
+
+
+Then verify :- 
+http://192.168.1.101:50000/v2/hello-world-local/tags/list
+
+
+How to monitor container resource utilizations using ctop ? 
+======================================================================================
+ctop :- docker run --rm -ti --name=ctop -v /var/run/docker.sock:/var/run/docker.sock quay.io/vektorlab/ctop:latest
+
+
+How to add route delete route ? 
+======================================================================================
+root@devops01:~# route -n
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         192.168.1.1     0.0.0.0         UG    100    0        0 enp0s3
+0.0.0.0         10.0.2.1        0.0.0.0         UG    101    0        0 enp0s8
+10.0.2.0        0.0.0.0         255.255.255.0   U     101    0        0 enp0s8
+169.254.0.0     0.0.0.0         255.255.0.0     U     1000   0        0 enp0s8
+192.168.0.0     0.0.0.0         255.255.0.0     U     100    0        0 enp0s3
+
+
+root@devops01:~# ip route list
+default via 192.168.1.1 dev enp0s3 proto dhcp metric 100
+default via 10.0.2.1 dev enp0s8 proto dhcp metric 101
+10.0.2.0/24 dev enp0s8 proto kernel scope link src 10.0.2.4 metric 101
+169.254.0.0/16 dev enp0s8 scope link metric 1000
+192.168.0.0/16 dev enp0s3 proto kernel scope link src 192.168.1.101 metric 100
+
+root@devops01:~# ip route del default metric 101
+root@devops01:~# ip route add 10.0.2.0/24 via 10.0.2.4
+
+root@devops01:~# ip route list
+default via 192.168.1.1 dev enp0s3 proto dhcp metric 100
+10.0.2.0/24 via 10.0.2.4 dev enp0s8
+10.0.2.0/24 dev enp0s8 proto kernel scope link src 10.0.2.4 metric 101
+169.254.0.0/16 dev enp0s8 scope link metric 1000
+192.168.0.0/16 dev enp0s3 proto kernel scope link src 192.168.1.101 metric 100
+
+root@devops01:~# route -n
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         192.168.1.1     0.0.0.0         UG    100    0        0 enp0s3
+10.0.2.0        10.0.2.4        255.255.255.0   UG    0      0        0 enp0s8
+10.0.2.0        0.0.0.0         255.255.255.0   U     101    0        0 enp0s8
+169.254.0.0     0.0.0.0         255.255.0.0     U     1000   0        0 enp0s8
+192.168.0.0     0.0.0.0         255.255.0.0     U     100    0        0 enp0s3
+
+
+
+
+
+

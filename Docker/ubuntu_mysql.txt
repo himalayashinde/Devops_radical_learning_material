@@ -1,0 +1,17 @@
+from ubuntu
+
+run apt-get update -y
+echo "DOCKER UPDATED"
+run apt-get upgrade -y
+echo "DOCKER UGRADED"
+run service mysql start
+echo "SERVICE STARTED...................."
+run echo "my sql installed properly u can use it now"
+
+#expose 80
+
+CMD mysql
+
+docker build -t ubuntu-mysql /var/docker/ubuntu/mysql
+
+docker exec -it 9f5b5255b14a /bin/bash -- 

@@ -1,0 +1,21 @@
+write a dockerfile which overrides a existing conatiner and 
+
+1> NFS setup and volume persistance
+2> df -h -- 
+
+linux permission thread-- assignment
+
+docker compose and registry
+
+
+root@ip-172-31-2-171:~# docker run -d -p 36000:500 --restart always --name himalaya_registery registry:latest
+Unable to find image 'registry:latest' locally
+latest: Pulling from library/registry
+c87736221ed0: Pull complete
+1cc8e0bb44df: Pull complete
+54d33bcb37f5: Pull complete
+e8afc091c171: Pull complete
+b4541f6d3db6: Pull complete
+Digest: sha256:8004747f1e8cd820a148fb7499d71a76d45ff66bac6a29129bfdbfdc0154d146
+Status: Downloaded newer image for registry:latest
+46cde26403df0fd7560f19cb719e594d2d27855e6a116ed62a006e00466999f6
