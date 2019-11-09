@@ -1,0 +1,474 @@
+root@ip-172-31-11-108:~/maven# git
+usage: git [--version] [--help] [-C <path>] [-c <name>=<value>]
+           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+           [-p | --paginate | --no-pager] [--no-replace-objects] [--bare]
+           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
+           <command> [<args>]
+
+These are common Git commands used in various situations:
+
+start a working area (see also: git help tutorial)
+   clone      Clone a repository into a new directory
+   init       Create an empty Git repository or reinitialize an existing one
+
+work on the current change (see also: git help everyday)
+   add        Add file contents to the index
+   mv         Move or rename a file, a directory, or a symlink
+   reset      Reset current HEAD to the specified state
+   rm         Remove files from the working tree and from the index
+
+examine the history and state (see also: git help revisions)
+   bisect     Use binary search to find the commit that introduced a bug
+   grep       Print lines matching a pattern
+   log        Show commit logs
+   show       Show various types of objects
+   status     Show the working tree status
+
+grow, mark and tweak your common history
+   branch     List, create, or delete branches
+   checkout   Switch branches or restore working tree files
+   commit     Record changes to the repository
+   diff       Show changes between commits, commit and working tree, etc
+   merge      Join two or more development histories together
+   rebase     Reapply commits on top of another base tip
+   tag        Create, list, delete or verify a tag object signed with GPG
+
+collaborate (see also: git help workflows)
+   fetch      Download objects and refs from another repository
+   pull       Fetch from and integrate with another repository or a local branch
+   push       Update remote refs along with associated objects
+
+'git help -a' and 'git help -g' list available subcommands and some
+concept guides. See 'git help <command>' or 'git help <concept>'
+to read about a specific subcommand or concept.
+
+
+
+Installation of GIT Client
+----------------------------
+1> apt-get install git-core 
+
+root@ip-172-31-45-27:~# apt-get install git-core
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+Note, selecting 'git' instead of 'git-core'
+git is already the newest version (1:2.17.1-1ubuntu0.4).
+git set to manually installed.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+
+2> git --version
+
+root@ip-172-31-45-27:~# git --version
+git version 2.17.1
+
+
+Customize Git Environment
+----------------------------
+
+Setting username
+----------------------------
+3> root@ip-172-31-45-27:~# git config --global user.name "himalayashinde@gmail.com"
+
+Setting email id
+----------------------------
+4> root@ip-172-31-45-27:~# git config --global user.email "himalayashinde@gmail.com"
+
+Avoid merge commits for pulling
+----------------------------
+You pull the latest changes from a remote repository, and if these changes are divergent,
+then by default Git creates merge commits. We can avoid this via following settings.
+
+5> root@ip-172-31-45-27:~# git config --global branch.autosetuprebase always
+
+Color highlighting
+----------------------------
+The following commands enable color highlighting for Git in the console.
+
+6> root@ip-172-31-45-27:~# git config --global color.ui true
+
+7> root@ip-172-31-45-27:~# git config --global color.status auto
+
+8> root@ip-172-31-45-27:~# git config --global color.branch auto
+
+Setting default editor
+----------------------------
+By default, Git uses the system default editor, which is taken from the VISUAL or EDITOR environment variable.
+We can configure a different one by using git config.
+
+9> root@ip-172-31-45-27:~# git config --global core.editor vi
+
+Listing Git settings
+----------------------------
+To verify your Git settings of the local repository, use git config –list command as given below.
+
+10> root@ip-172-31-45-27:~# git config --list
+user.name=himalayashinde@gmail.com
+user.email=himalayashinde@gmail.com
+branch.autosetuprebase=always
+color.ui=true
+color.status=auto
+color.branch=auto
+core.editor=vi
+
+Create a Bare Repository
+----------------------------
+root@ip-172-31-45-27:~# mkdir learning_git
+
+root@ip-172-31-45-27:~# cd learning_git/
+
+root@ip-172-31-45-27:~/learning_git# ls
+
+11> root@ip-172-31-45-27:~/learning_git# git --bare init  -- this command initialize the bare repository
+	Initialized empty Git repository in /root/learning_git/
+
+root@ip-172-31-45-27:~/learning_git# ls
+HEAD  branches  config  description  hooks  info  objects  refs
+
+
+Push Changes to the Repository
+-------------------------------
+
+root@ip-172-31-45-27:~# mkdir tom_repo
+
+root@ip-172-31-45-27:~# ls
+learning_git  mysql  snap  tom_repo
+
+root@ip-172-31-45-27:~# cd tom_repo/
+
+12 > root@ip-172-31-45-27:~/tom_repo# git init  -- It initializes the .git file inside the repository
+     Initialized empty Git repository in /root/tom_repo/.git/
+
+root@ip-172-31-45-27:~/tom_repo# ls -al
+total 12
+drwxr-xr-x 3 root root 4096 Oct 19 18:00 .
+drwx------ 8 root root 4096 Oct 19 17:59 ..
+drwxr-xr-x 7 root root 4096 Oct 19 18:00 .git
+
+root@ip-172-31-45-27:~/tom_repo# cd .git/
+
+root@ip-172-31-45-27:~/tom_repo/.git# ls
+HEAD  branches  config  description  hooks  info  objects  refs
+
+13> root@ip-172-31-45-27:~/tom_repo# git status -s -- It shows the status of the file that is inside the repository
+	?? README
+
+14> root@ip-172-31-45-27:~/tom_repo# git add . -- It add the files in the current directory to the local repository
+	root@ip-172-31-45-27:~/tom_repo# git status -s
+	A  README
+
+15> root@ip-172-31-45-27:~/tom_repo# git commit -m 'first ever commit'  -- It helps to commit the changes in the local repository
+	[master (root-commit) f8e1b4e] first ever commit
+	1 file changed, 1 insertion(+)
+	create mode 100644 README
+
+16>	root@ip-172-31-45-27:~/tom_repo# git log  -- It shows  the logs of the all the changes in the file or repository
+	commit f8e1b4e4a980be259fb23621360141e938b077a4 (HEAD -> master)
+	Author: himalayashinde@gmail.com <himalayashinde@gmail.com>
+	Date:   Sat Oct 19 18:12:37 2019 +0000
+
+    first ever commit
+
+
+ERROR :
+------------------------------------------------------------------------------------------------------------------------
+root@ip-172-31-45-27:~/tom_repo# git remote add origin https://github.com/himalayashinde/hello-world.git
+fatal: remote origin already exists.
+root@ip-172-31-45-27:~/tom_repo# git push -u origin master
+Username for 'https://github.com': himalayashinde@gmail.com
+Password for 'https://himalayashinde@gmail.com@github.com':
+To https://github.com/himalayashinde/hello-world.git
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'https://github.com/himalayashinde/hello-world.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+---------------
+
+Solved the above error
+-------------------------
+
+------------------------------------------------------------------------------------------------------------------------
+root@ip-172-31-45-27:~/tom_repo# git pull --allow-unrelated-histories https://github.com/himalayashinde/hello-world.git
+------------------------------------------------------------------------------------------------------------------------
+From https://github.com/himalayashinde/hello-world
+ * branch            HEAD       -> FETCH_HEAD
+Merge made by the 'recursive' strategy.
+ README.md | 3 +++
+ 1 file changed, 3 insertions(+)
+ create mode 100644 README.md
+root@ip-172-31-45-27:~/tom_repo# git status
+On branch master
+nothing to commit, working tree clean
+
+------------------------------------------------------------------------------------------------------------------------
+root@ip-172-31-45-27:~/tom_repo# git push -u origin master
+Username for 'https://github.com': himalayashinde@gmail.com
+Password for 'https://himalayashinde@gmail.com@github.com':
+Counting objects: 8, done.
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (8/8), 811 bytes | 811.00 KiB/s, done.
+Total 8 (delta 0), reused 0 (delta 0)
+To https://github.com/himalayashinde/hello-world.git
+   ff27b7e..f707a53  master -> master
+Branch 'master' set up to track remote branch 'master' from 'origin' by rebasing.
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+root@ip-172-31-45-27:~/jerry_repo# git clone https://github.com/himalayashinde/hello-world.git
+Cloning into 'hello-world'...
+remote: Enumerating objects: 15, done.
+remote: Total 15 (delta 0), reused 0 (delta 0), pack-reused 15
+Unpacking objects: 100% (15/15), done.
+
+-------------------------
+forking webhook
+ssh -keys
+create new user and  
+---------------------------
+how to create a branch in Git.
+--------------------------------------------------------------------------------------------
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git branch firstbranch
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git checkout firstbranch
+Switched to branch 'firstbranch'
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# echo "first branch first file" > firstbranch.txt
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# ls
+README  README.md  abcd.txt  firstbranch.txt  lion.txt  string.c
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# cat firstbranch.txt
+first branch first file
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git add firstbranch.txt
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git status -s
+A  firstbranch.txt
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git status
+On branch firstbranch
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        new file:   firstbranch.txt
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git commit -m "Firstbrach.txt is commited"
+[firstbranch ac871af] Firstbrach.txt is commited
+ 1 file changed, 1 insertion(+)
+ create mode 100644 firstbranch.txt
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git push
+fatal: The current branch firstbranch has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin firstbranch
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git push --set-upstream origin firstbranch
+Username for 'https://github.com': himalayashinde
+Password for 'https://himalayashinde@github.com':
+Counting objects: 3, done.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 303 bytes | 303.00 KiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+remote:
+remote: Create a pull request for 'firstbranch' on GitHub by visiting:
+remote:      https://github.com/himalayashinde/hello-world/pull/new/firstbranch
+remote:
+To https://github.com/himalayashinde/hello-world.git
+ * [new branch]      firstbranch -> firstbranch
+Branch 'firstbranch' set up to track remote branch 'firstbranch' from 'origin' by rebasing.
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# ls
+README  README.md  abcd.txt  firstbranch.txt  lion.txt  string.c
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git checkout master
+Switched to branch 'master'
+Your branch is up to date with 'origin/master'.
+root@ip-172-31-45-27:~/jerry_repo/hello-world# ls
+README  README.md  abcd.txt  lion.txt  string.c
+
+---------------------------------------------------------------------------------------------------
+Git Merge : always be in the destionation branch to which you want to merge the branch with
+---------------------------------------------------------------------------------------------------
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git merge firstbranch
+Updating 3b14d95..ac871af
+Fast-forward
+ firstbranch.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 firstbranch.txt
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# ls
+README  README.md  abcd.txt  firstbranch.txt  lion.txt  string.c
+root@ip-172-31-45-27:~/jerry_repo/hello-world#
+
+---------------------------------------------------------------------------------------------------
+Git Rebasing
+---------------------------------------------------------------------------------------------------
+
+
+
+
+---------------------------------------------------------------------------------------------------
+Git ssh-keygen
+---------------------------------------------------------------------------------------------------
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa): /root/.ssh/id_rsa
+/root/.ssh/id_rsa already exists.
+Overwrite (y/n)? y
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:6H+yLx6Vx4tvy9MYTFN6Ddw459aFsNBHT2LFPV4vb1M root@ip-172-31-45-27
+The key's randomart image is:
++---[RSA 2048]----+
+|          ...++*+|
+|           ..oO=B|
+|            .+.*B|
+|       .   o+ o.E|
+|      . S oooo +.|
+|     .   . oo. .o|
+|      . . . .+ ..|
+|       .o..o+ .  |
+|       .+*..+o   |
++----[SHA256]-----+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# cat /root/.ssh/id_rsa.pub.
+cat: /root/.ssh/id_rsa.pub.: No such file or directory
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# cat /root/.ssh/id_rsa.pub we can read the contents or the RSA key generated here on this location.
+ 
+root@ip-172-31-45-27:~/jerry_repo/hello-world# ssh -T git@github.com
+Hi himalayashinde! You've successfully authenticated, but GitHub does not provide shell access.
+--------------------------------------------------------------------------------------------------------------------
+
+Git : How to go back to previous state.
+
+git checkout [8 digit hash code] [filename] 
+
+this will send you to previous state of the file or the last commit state you wanted to go back.
+
+--------------------------------------------------------------------------------------------------------------------
+Git How to Ustage a file Example Below 
+--------------------------------------------------------------------------------------------------------------------
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# echo "aham brahamasmi" > file2.txt
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        file2.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git add file2.txt
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        new file:   file2.txt
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git reset HEAD file2.txt
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        file2.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+--------------------------------------------------------------------------------------------------------------------
+How to use .gitignore : It helps git to ignore these files by not adding them to staging area.
+--------------------------------------------------------------------------------------------------------------------
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# touch .gitignore
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        .gitignore
+        file2.txt
+        file3.html
+        file4.html
+
+nothing added to commit but untracked files present (use "git add" to track)
+root@ip-172-31-45-27:~/jerry_repo/hello-world# echo "file3.html" > .gitignore
+root@ip-172-31-45-27:~/jerry_repo/hello-world# cat .gitignore
+file3.html
+root@ip-172-31-45-27:~/jerry_repo/hello-world# echo "file4.html" > .gitignore
+root@ip-172-31-45-27:~/jerry_repo/hello-world# cat .gitignore
+file4.html
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        .gitignore
+        file2.txt
+        file3.html
+
+nothing added to commit but untracked files present (use "git add" to track)
+root@ip-172-31-45-27:~/jerry_repo/hello-world# vi .gitignore
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        .gitignore
+        file2.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+root@ip-172-31-45-27:~/jerry_repo/hello-world# cat .gitignore
+file4.html
+file3.html
+
+------------------------------------------------------------------------------------------------------------------------
+Listing all branches in git repository
+------------------------------------------------------------------------------------------------------------------------
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git branch
+  firstbranch
+* master
+
+--Here Asterix (*) defines in which branch currently we are in.
+
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git branch
+  firstbranch
+* master
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git checkout firstbranch
+Switched to branch 'firstbranch'
+Your branch is up to date with 'origin/firstbranch'.
+root@ip-172-31-45-27:~/jerry_repo/hello-world# git branch
+* firstbranch
+  master
+
+------------------------------------------------------------------------------------------------------------------------
+Removing a branch from git repository
+------------------------------------------------------------------------------------------------------------------------
+
+git branch -d [branchname]
+

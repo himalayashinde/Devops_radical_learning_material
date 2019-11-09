@@ -1,0 +1,14 @@
+    1  git
+    2  git -version
+    3  git --version
+    4  exit
+    5  clear
+    6  git status
+    7  git log
+    8  git push
+    9  git push --set-upstream origin master
+   10  git push --set-upstream origin master
+   11  git push --set-upstream origin master
+   12  clear
+   13  history
+   14  history > git_commands_history.txt

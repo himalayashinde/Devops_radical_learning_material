@@ -1,0 +1,279 @@
+
+There are two type of owner user owner and group owner.
+
+the users and groups of a system can be locally managed in /etc ->(passwd) file and /etc ->(group) file
+
+every file has a user owner and a group owner
+
+First we have made a directory with mkdir command
+
+root@ip-172-31-36-255:~# mkdir learning_permission
+root@ip-172-31-36-255:~# ls -lrt
+total 12
+drwxr-xr-x 4 root root 4096 Sep 27 18:45 snap
+drwxr-xr-x 2 root root 4096 Oct  5 07:57 apache
+drwxr-xr-x 2 root root 4096 Oct  5 08:41 learning_permission
+
+The root user owns the file snap,apache and learning_permission as does the group root
+
+Since no user yet created so we get the below message
+ubuntu@ip-172-31-36-255:/etc$ sudo su himalaya
+No passwd entry for user 'himalaya'
+
+----------------------------------------------
+chgrp : You can change the group owner of a file using the chgrp command
+
+In the below example we can see how we have changed the group owner for learning_permission.txt
+
+root@ip-172-31-36-255:~# ls -lrt
+total 16
+drwxr-xr-x 4 root root 4096 Sep 27 18:45 snap
+drwxr-xr-x 2 root root 4096 Oct  5 07:57 apache
+drwxr-xr-x 2 root root 4096 Oct  5 09:06 learning_permission
+-rw-r--r-- 1 root root   32 Oct  5 09:07 learning_permission.txt
+root@ip-172-31-36-255:~# chgrp ubuntu learning_permission.txt
+root@ip-172-31-36-255:~# ls -lrt
+total 16
+drwxr-xr-x 4 root root   4096 Sep 27 18:45 snap
+drwxr-xr-x 2 root root   4096 Oct  5 07:57 apache
+drwxr-xr-x 2 root root   4096 Oct  5 09:06 learning_permission
+-rw-r--r-- 1 root ubuntu   32 Oct  5 09:07 learning_permission.txt
+
+--------------------------------------------------------------------------------------
+
+
+chown: The user owner of a file can be changed with chown command 
+
+In the below example we can see how we have changed the owner i.e user owener for learning_permission.txt
+
+root@ip-172-31-36-255:~# ls -lrt
+total 16
+drwxr-xr-x 4 root root   4096 Sep 27 18:45 snap
+drwxr-xr-x 2 root root   4096 Oct  5 07:57 apache
+drwxr-xr-x 2 root root   4096 Oct  5 09:06 learning_permission
+-rw-r--r-- 1 root ubuntu   32 Oct  5 09:07 learning_permission.txt
+root@ip-172-31-36-255:~# chown ubuntu learning_permission.txt
+root@ip-172-31-36-255:~# ls -lrt
+total 16
+drwxr-xr-x 4 root   root   4096 Sep 27 18:45 snap
+drwxr-xr-x 2 root   root   4096 Oct  5 07:57 apache
+drwxr-xr-x 2 root   root   4096 Oct  5 09:06 learning_permission
+-rw-r--r-- 1 ubuntu ubuntu   32 Oct  5 09:07 learning_permission.txt
+
+
+we can also do as shown below we have changed the both the owner of the file with one command
+
+root@ip-172-31-36-255:~# ls -lrt
+total 16
+drwxr-xr-x 4 root   root   4096 Sep 27 18:45 snap
+drwxr-xr-x 2 root   root   4096 Oct  5 07:57 apache
+drwxr-xr-x 2 root   root   4096 Oct  5 09:06 learning_permission
+-rw-r--r-- 1 ubuntu ubuntu   32 Oct  5 09:07 learning_permission.txt
+root@ip-172-31-36-255:~# chown root:root learning_permission.txt
+root@ip-172-31-36-255:~# ls -lrt
+total 16
+drwxr-xr-x 4 root root 4096 Sep 27 18:45 snap
+drwxr-xr-x 2 root root 4096 Oct  5 07:57 apache
+drwxr-xr-x 2 root root 4096 Oct  5 09:06 learning_permission
+-rw-r--r-- 1 root root   32 Oct  5 09:07 learning_permission.txt
+
+
+------------------------------------------------------------------------------------------------------------
+
+list of special files
+
+When we use ls -l, for each file you can see ten characters before the user and group
+owner. The first character tells us the type of file. Regular files get a -, directories get
+a d, symbolic links are shown with an l, pipes get a p, character devices a c, block
+devices a b, and sockets an s.
+
+
+Unix special files
+first character  | 	file type
+		- 		 |	normal file
+		d 		 |	directory
+		l 		 |	symbolic link
+		p 		 |	named pipe
+		b 		 |	block device
+		c 		 |	character device
+		s 		 |	socket
+
+In the previous example we can see here first character defines directory and normal file
+
+drwxr-xr-x 2 root   root   4096 Oct  5 09:06 learning_permission
+-rw-r--r-- 1 ubuntu ubuntu   32 Oct  5 09:07 learning_permission.txt
+----------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------
+
+
+permissions
+rwx
+The nine characters following the file type denote the permissions in three triplets. A
+permission can be r for read access, w for write access, and x for execute. You need
+the r permission to list (ls) the contents of a directory. You need the x permission to
+enter (cd) a directory. You need the w permission to create files in or remove files
+from a directory.
+Below are standard Unix file permissions
+permission 	|	on a file 				 |	on a directory
+r (read) 	|	read file contents(cat)  |	read directory contents (ls)
+w (write) 	|	change file contents (vi)| 	create files in (touch)
+x (execute) |	execute the file 		 |	enter the directory (cd)
+
+
+----------------------------------------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------------------
+Below is a table describing the function of all ten characters.
+				Unix file permissions position
+--------------------------------------------------------------------------------------				
+position 	|	characters 		|			function
+--------------------------------------------------------------------------------------
+	1 		|		- 			|		this is a regular file
+	2-4 	|		rwx 		|		permissions for the user owner
+	5-7 	|		r-x 		|		permissions for the group owner
+	8-10 	|		r-- 		|		permissions for others
+--------------------------------------------------------------------------------------
+
+When you are the user owner of a file, then the user owner permissions apply to
+you. The rest of the permissions have no influence on your access to the file.
+When you belong to the group that is the group owner of a file, then the group
+owner permissions apply to you. The rest of the permissions have no influence on
+your access to the file.
+When you are not the user owner of a file and you do not belong to the group
+owner, then the others permissions apply to you. The rest of the permissions have
+no influence on your access to the file.
+	
+-----------------------------------------------------------------------------------------------
+setting permissions (chmod) : Permissions can be changed with chmod. The first example gives the user owner
+execute permissions.
+
+---------------------------
+chmod u+x [file name] : Below are the details
+----------------------------
+here chmod  defines change mode 
+		u  means    User only
+		+  means    Adding permission
+		x  means    Executable 
+------------------------------------------------------------		
+chmod a+x [filename] : here a means for all users permission.		
+--------------------------------------------------------------
+Below is how we used it.
+
+root@ip-172-31-36-255:~# ls -lrt
+total 16
+drwxr-xr-x 4 root root 4096 Sep 27 18:45 snap
+drwxr-xr-x 2 root root 4096 Oct  5 07:57 apache
+drwxr-xr-x 2 root root 4096 Oct  5 09:06 learning_permission
+-rw-r--r-- 1 root root   32 Oct  5 09:07 learning_permission.txt
+
+root@ip-172-31-36-255:~# chmod u+x learning_permission.txt
+
+root@ip-172-31-36-255:~# ls -lrt
+total 16
+drwxr-xr-x 4 root root 4096 Sep 27 18:45 snap
+drwxr-xr-x 2 root root 4096 Oct  5 07:57 apache
+drwxr-xr-x 2 root root 4096 Oct  5 09:06 learning_permission
+-rwxr--r-- 1 root root   32 Oct  5 09:07 learning_permission.txt
+
+________________________________________________________________
+chmod g-r [File name]: removes read permission from group users.
+________________________________________________________________
+
+root@ip-172-31-36-255:~# ls -lrt
+total 12
+drwxr-xr-x 4 root root 4096 Sep 27 18:45 snap
+drwxr-xr-x 2 root root 4096 Oct  5 09:06 learning_permission
+-rwxr--r-- 1 root root   32 Oct  5 09:07 learning_permission.txt
+root@ip-172-31-36-255:~# chmod g-r learning_permission.txt
+root@ip-172-31-36-255:~# ls -lrt
+total 12
+drwxr-xr-x 4 root root 4096 Sep 27 18:45 snap
+drwxr-xr-x 2 root root 4096 Oct  5 09:06 learning_permission
+-rwx---r-- 1 root root   32 Oct  5 09:07 learning_permission.txt
+
+------------------------------------------------------------------------
+chmod o-r [file name] : removes read permission from other users.
+--------------------------------------------------------------------
+
+root@ip-172-31-36-255:~# ls -lrt
+total 12
+drwxr-xr-x 4 root root 4096 Sep 27 18:45 snap
+drwxr-xr-x 2 root root 4096 Oct  5 09:06 learning_permission
+-rwx---r-- 1 root root   32 Oct  5 09:07 learning_permission.txt
+root@ip-172-31-36-255:~# chmod o-r learning_permission.txt
+root@ip-172-31-36-255:~# ls -lrt
+total 12
+drwxr-xr-x 4 root root 4096 Sep 27 18:45 snap
+drwxr-xr-x 2 root root 4096 Oct  5 09:06 learning_permission
+-rwx------ 1 root root   32 Oct  5 09:07 learning_permission.txt
+
+-----------------------------------------------------------------------
+chmod a+w [filename]
+------------------------------------------------------------------------
+root@ip-172-31-36-255:~# chmod a+w learning_permission.txt
+root@ip-172-31-36-255:~# ls -lrt
+total 12
+drwxr-xr-x 4 root root 4096 Sep 27 18:45 snap
+drwxr-xr-x 2 root root 4096 Oct  5 09:06 learning_permission
+-rwx-w--w- 1 root root   32 Oct  5 09:07 learning_permission.txt
+
+we can even skip to type the a.
+
+root@ip-172-31-36-255:~# chmod +x learning_permission.txt
+root@ip-172-31-36-255:~# ls -lrt
+total 12
+drwxr-xr-x 4 root root 4096 Sep 27 18:45 snap
+drwxr-xr-x 2 root root 4096 Oct  5 09:06 learning_permission
+-rwx-wx-wx 1 root root   32 Oct  5 09:07 learning_permission.txt
+
+_________________________________________________________________________
+chmod u=rw,g=rw,o=r [filename]
+---------------------------------------
+root@ip-172-31-36-255:~# chmod u=rw,g=rw,o=r learning_permission.txt
+root@ip-172-31-36-255:~# ls -lrt
+total 12
+drwxr-xr-x 4 root root 4096 Sep 27 18:45 snap
+d---r-xr-x 2 root root 4096 Oct  5 09:06 learning_permission
+-rw-rw-r-- 1 root root   32 Oct  5 09:07 learning_permission.txt
+---------------------------------------------------------------------
+chmod u=rwx,ug+rw,o=r [filename]
+---------------------------------------------------------------------
+
+root@ip-172-31-36-255:~# chmod u=rwx,ug+rw,o=r learning_permission.txt
+root@ip-172-31-36-255:~# ls -lrt
+total 12
+drwxr-xr-x 4 root root 4096 Sep 27 18:45 snap
+d---r-xr-x 2 root root 4096 Oct  5 09:06 learning_permission
+-rwxrw-r-- 1 root root   32 Oct  5 09:07 learning_permission.txt
+------------------------------------------------------------------------
+
+setting octal permissions
+------------------------------------------------------------------------
+Most Unix administrators will use the old school octal system to talk about and set
+permissions. Look at the triplet bitwise, equating r to 4, w to 2, and x to 1. 
+
+		Octal permissions
+binary  |  octal   |      permission
+000     |  0       |     ---
+001     |  1       |     --x
+010     |  2       |     -w-
+011     |  3       |     -wx
+100     |  4       |     r--
+101     |  5       |     r-x
+110     |  6       |     rw-
+111     |  7       |     rwx
+_______________________________________________________________
+chmod 777 learning_permission.txt
+________________________________________________________________
+
+root@ip-172-31-36-255:~# chmod 777 learning_permission.txt
+root@ip-172-31-36-255:~# ls -lrt
+total 12
+drwxr-xr-x 4 root root 4096 Sep 27 18:45 snap
+d---r-xr-x 2 root root 4096 Oct  5 09:06 learning_permission
+-rwxrwxrwx 1 root root   32 Oct  5 09:07 learning_permission.txt
+________________________________________________________________
+
+
