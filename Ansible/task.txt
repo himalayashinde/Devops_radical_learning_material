@@ -1,0 +1,50 @@
+GIT (Sasi) - 14th Dec
+GIt Commands 40-50
+GIt Branch management
+GIT Version management
+GIT SSH
+
+Maven (Him)  - 8th Dec
+Maven Commands
+Build Life cycle
+
+Docker (Shantanu & Anuj)- 14th Dec
+Docker Architecture
+Decker Engine/Demon
+Docker Volume persistance
+Docker layer
+Docker Commands
+Docker repository & Registry
+Docker compose
+Docker File
+Docker Swarn
+Docker Security
+Best practic for container/image creation
+
+Ansible (Ritesh)- 14th Dec
+Ansible Installation
+SSH
+Role for Apache/NGINX/SQL/Tomcat & server health checkup
+Ansible for DOcker/Git/Maven/Jenkins installation
+
+
+Jenkins (Abhi) - 14th Dec
+Jenkins installation
+GIt Installation
+Maven installation
+GIT/Maven integration
+Build & Deploy of code
+Pipeline 
+Security- Role base
+DB intergration
+
+Linux (Dheeraj & Shatanu)	 - 8th Dec		
+Passwordless SSH
+NFS
+Owenrship
+Yum installation process
+IPtables
+Samba
+Swap memory
+50 commands
+Scripts to installton Docker/Apache/GIt/maven/jekins/Ansible
